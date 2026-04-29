@@ -48,21 +48,21 @@ None of these require:
 
 - Rewriting the score function signature (integrators do not break)
 - Re-doing the audit baseline (cumulative audit work amortizes; new audits focus on the marginal change)
-- Rebuilding dispute / clawback layers (`docs/COUNTERFACTUALS.md`'s counterfactual primitive holds across all `v`)
+- Rebuilding dispute / forfeiture layers (`docs/COUNTERFACTUALS.md`'s counterfactual primitive holds across all `v`)
 - Migrating holder histories (Shapley extends naturally; pro-rata would discontinue at the linear/non-linear boundary)
 
 A pro-rata substrate would force a full redeployment + re-audit + integrator migration on every non-linear addition. Shapley-from-v1 means each extension ships at the pace business and security warrant — module-by-module, not protocol-by-protocol.
 
-### 4. The dispute and clawback primitives depend on Shapley framing
+### 4. The dispute and forfeiture primitives depend on Shapley framing
 
 `docs/COUNTERFACTUALS.md` documents two applications of the counterfactual primitive `v(S ∪ {i}) − v(S)`:
 
 - **Dispute counterfactuals** (verification, query-time)
-- **Clawback counterfactuals** (correction, event-time)
+- **Forfeiture counterfactuals** (correction, event-time — claim-layer score reduction; *not* fund-layer clawback, which is a distinct primitive outside this spec)
 
-Both rely on the counterfactual being the building block of the score. Pro-rata has no natural counterfactual layer; its score is computed from total weighted balance, not from marginal contributions. Building dispute and clawback mechanisms on a pro-rata base is possible but not clean — the math does not flow from the same primitive.
+Both rely on the counterfactual being the building block of the score. Pro-rata has no natural counterfactual layer; its score is computed from total weighted balance, not from marginal contributions. Building dispute and forfeiture mechanisms on a pro-rata base is possible but not clean — the math does not flow from the same primitive.
 
-Shipping Shapley in v1 means dispute and clawback ride on the same mathematical substrate as the score itself.
+Shipping Shapley in v1 means dispute and forfeiture ride on the same mathematical substrate as the score itself.
 
 ### 5. Anti-extraction encoded as axiomatic, not discretionary
 
@@ -80,7 +80,7 @@ Pro-rata happens to satisfy these axioms in linear cases, but the satisfaction i
 - The Shapley closed form for linear-additive `v`: `φᵢ = ωᵢ × pool_reserve / Σⱼ ωⱼ`
 - Numerically identical to pro-rata of time-integrated weighted balance
 - Architecturally identical to the substrate that handles non-linear extensions in v2+
-- Compatible with the counterfactual primitive that underlies dispute and clawback (`docs/COUNTERFACTUALS.md`)
+- Compatible with the counterfactual primitive that underlies dispute and forfeiture (`docs/COUNTERFACTUALS.md`)
 - Anti-extraction encoded as axiomatic at the score layer
 - Forward-compatible with each non-linear extension as a parameterization of the existing function
 
@@ -90,4 +90,4 @@ The numerical simplicity of v1 is the easy case. The methodology has to hold in 
 
 - Shapley, L. S. (1953). *A Value for n-Person Games*. Contributions to the Theory of Games, II. Princeton University Press.
 - See [`SHAPLEY.md`](SHAPLEY.md) for the foundational axioms.
-- See [`COUNTERFACTUALS.md`](COUNTERFACTUALS.md) for the dispute and clawback applications.
+- See [`COUNTERFACTUALS.md`](COUNTERFACTUALS.md) for the dispute and forfeiture applications.
